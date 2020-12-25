@@ -16,7 +16,7 @@ public class WorkWithDatabaseActivity extends AppCompatActivity {
     Button addWordButton;
     EditText wordEditText, translateEditText;
     ArrayList<CoupleWords> wordList = new ArrayList<CoupleWords>();
-    TextView idTextView, wordTextView, translateTextView;
+    TextView idTextView, wordTextView, translateTextView, isPassedTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class WorkWithDatabaseActivity extends AppCompatActivity {
         idTextView = (TextView)findViewById(R.id.idTextView);
         wordTextView = (TextView)findViewById(R.id.wordTextView);
         translateTextView = (TextView)findViewById(R.id.translateTextView);
+        isPassedTextView = (TextView)findViewById(R.id.isPassedTextView);
 
         addWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,7 @@ public class WorkWithDatabaseActivity extends AppCompatActivity {
 
         showDatabaseInList();
     }
+
 
     private void showDatabaseInList() {
         for (int i = 0; i < wordList.size(); i++) {

@@ -46,13 +46,9 @@ public class MainActivity extends AppCompatActivity {
         btn_goToAchiveActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (archiveList != null) {
                     Intent intent = new Intent(MainActivity.this, ArchiveActivity.class);
                     intent.putExtra("archiveList", archiveList);
                     startActivity(intent);
-                } else {
-                    Toast.makeText(MainActivity.this, "ОШИБКА ДОСТУПА", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }

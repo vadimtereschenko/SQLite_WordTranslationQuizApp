@@ -5,18 +5,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.Editable;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLite";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "Laboratory_work_1";
     private static final String TABLE_NAME = "Dictionary";
     private static final String COLUMN_WORD_ID ="wordID";
     private static final String COLUMN_WORD ="word";
     private static final String COLUMN_TRANSLATION = "translation";
+    private static final String COLUMN_ISPASSED =  "isPassed";
 
 
     /* Конструктор суперкласса */
@@ -29,7 +31,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String script = "CREATE TABLE " + TABLE_NAME + "("
                 + COLUMN_WORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_WORD + " TEXT NOT NULL UNIQUE,"
-                + COLUMN_TRANSLATION + " TEXT NOT NULL UNIQUE" + ")";
+                + COLUMN_TRANSLATION + " TEXT NOT NULL UNIQUE,"
+                + COLUMN_ISPASSED + " BOOL"
+                + ")";
         db.execSQL(script);
     }
 
@@ -44,19 +48,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_WORD, word);
         values.put(COLUMN_TRANSLATION, translation);
+        values.put(COLUMN_ISPASSED, false);
         long result = db.insert(TABLE_NAME, null, values);
         db.close();
         return result;
     }
 
     public ArrayList<CoupleWords> getAllWords() {
-
         ArrayList<CoupleWords> wordsList = new ArrayList<CoupleWords>();
         String selectQuery = "SELECT  * FROM " + TABLE_NAME;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-
         if (cursor.moveToFirst()) {
             do {
                 CoupleWords words = new CoupleWords();
@@ -68,5 +70,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return wordsList;
+    }
+
+    public ArrayList<CoupleWords> getArchiveWords() {
+        ArrayList<CoupleWords> archiveWordsList = new ArrayList<CoupleWords>();
+        String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ISPASSED + " = 1;";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor.moveToFirst()) {
+            do {
+                CoupleWords words = new CoupleWords();
+                words.setWordID(Integer.parseInt(cursor.getString(0)));
+                words.setWord(cursor.getString(1));
+                words.setTranslation(cursor.getString(2));
+                archiveWordsList.add(words);
+            } while (cursor.moveToNext());
+        }
+        return archiveWordsList;
+    }
+
+    public boolean updateData(String wordID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ISPASSED, true);
+        db.update(TABLE_NAME, values, "wordID = ?", new String[]{wordID});
+        return true;
     }
 }

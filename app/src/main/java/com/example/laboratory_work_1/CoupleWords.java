@@ -7,21 +7,21 @@ public class CoupleWords implements Parcelable {
     private int wordID;
     private String word;
     private String translation;
-    private int countPassed;
+    private boolean isPassed;
 
     public CoupleWords() {}
 
     public CoupleWords(String word, String translation) {
         this.word = word;
         this.translation = translation;
-        this.countPassed = 0;
+        this.isPassed = false;
     }
 
     public CoupleWords(int wordID, String word, String translation) {
         this.wordID = wordID;
         this.word = word;
         this.translation = translation;
-        this.countPassed = 0;
+        this.isPassed = false;
     }
 
     public CoupleWords(Parcel in) {
@@ -30,7 +30,7 @@ public class CoupleWords implements Parcelable {
         wordID = Integer.valueOf(data[0]);
         word = data[1];
         translation = data[2];
-        countPassed = Integer.valueOf(data[3]);
+        isPassed = Boolean.valueOf(data[3]);
     }
 
     public int getWordID() {
@@ -57,13 +57,9 @@ public class CoupleWords implements Parcelable {
         this.translation = translation;
     }
 
-    public int getCountPassed() {
-        return countPassed;
-    }
+    public boolean getIsPassed() {return  isPassed; }
 
-    public void setCountPassed(int countPassed) {
-        this.countPassed = countPassed;
-    }
+    public void setIsPassed(boolean isPassed) { this.isPassed = isPassed; }
 
     public static final Parcelable.Creator<CoupleWords> CREATOR = new Parcelable.Creator<CoupleWords>() {
 
@@ -85,6 +81,6 @@ public class CoupleWords implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] { String.valueOf(wordID), word, translation, String.valueOf(countPassed) });
+        dest.writeStringArray(new String[] { String.valueOf(wordID), word, translation, String.valueOf(Boolean.valueOf(isPassed))});
     }
 }

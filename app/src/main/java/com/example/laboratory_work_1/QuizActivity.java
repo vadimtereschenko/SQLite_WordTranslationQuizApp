@@ -62,19 +62,19 @@ public class QuizActivity extends AppCompatActivity {
                 case R.id.firstButton:
                     if (buttonWin == 1) {
                         checkMessage = "+";
-                        wordList.get(buttonWin - 1).setCountPassed(wordList.get(buttonWin - 1).getCountPassed() + 1);
+                        db.updateData(Integer.toString(wordList.get(buttonWin-1).getWordID()));
                     }
                     break;
                 case R.id.secondButton:
                     if (buttonWin == 2) {
                         checkMessage = "+";
-                        wordList.get(buttonWin - 1).setCountPassed(wordList.get(buttonWin - 1).getCountPassed() + 1);
+                        db.updateData(Integer.toString(wordList.get(buttonWin-1).getWordID()));
                     }
                     break;
                 case R.id.thirthButton:
                     if (buttonWin == 3) {
                         checkMessage = "+";
-                        wordList.get(buttonWin - 1).setCountPassed(wordList.get(buttonWin - 1).getCountPassed() + 1);
+                        db.updateData(Integer.toString(wordList.get(buttonWin-1).getWordID()));
                     }
                     break;
             }
@@ -101,9 +101,5 @@ public class QuizActivity extends AppCompatActivity {
         firstButton.setText(quizList.get(0).getTranslation());
         secondButton.setText(quizList.get(1).getTranslation());
         thirthButton.setText(quizList.get(2).getTranslation());
-        if(wordList.get(buttonRandom).getCountPassed() >= 2) {
-            archiveList.add(wordList.get(buttonRandom));
-            wordList.remove(buttonRandom);
-        }
     }
 }
